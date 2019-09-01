@@ -35,8 +35,8 @@ func (errorType ErrorType) New(msg string) error {
 }
 
 // Newf creates a new customError with formatted message
-func (errorType ErrorType) Newf(msg string, args ...interface{}) error {
-	return customError{errorType: errorType, originalError: fmt.Errorf(msg, args...)}
+func (errorType ErrorType) Newf(format string, args ...interface{}) error {
+	return customError{errorType: errorType, originalError: fmt.Errorf(format, args...)}
 }
 
 // Wrap creates a new wrapped error
@@ -60,8 +60,8 @@ func New(msg string) error {
 }
 
 // Newf creates a no type error with formatted message
-func Newf(msg string, args ...interface{}) error {
-	return customError{errorType: NoType, originalError: pkgerrors.New(fmt.Sprintf(msg, args...))}
+func Newf(format string, args ...interface{}) error {
+	return customError{errorType: NoType, originalError: pkgerrors.New(fmt.Sprintf(format, args...))}
 }
 
 // Wrap an error with a string
