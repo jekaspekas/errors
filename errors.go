@@ -16,6 +16,8 @@ const (
 	BadRequest
 	// NotFound error
 	NotFound
+	// AccessDenied error
+	AccessDenied
 )
 
 type customError struct {
