@@ -1,8 +1,9 @@
-package main
+package errors
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
+
+	pkgerrors "github.com/pkg/errors"
 )
 
 // ErrorType is the type of an error
@@ -18,19 +19,19 @@ const (
 )
 
 type customError struct {
-	errorType ErrorType
+	errorType     ErrorType
 	originalError error
-	context errorContext
+	context       errorContext
 }
 
 type errorContext struct {
-	Field string
+	Field   string
 	Message string
 }
 
 // New creates a new customError
 func (errorType ErrorType) New(msg string) error {
-	return customError{errorType: errorType, originalError: errors.New(msg)}
+	return customError{errorType: errorType, originalError: pkgerrors.New(msg)}
 }
 
 // New creates a new customError with formatted message
@@ -45,7 +46,7 @@ func (errorType ErrorType) Wrap(err error, msg string) error {
 
 // Wrap creates a new wrapped error with formatted message
 func (errorType ErrorType) Wrapf(err error, msg string, args ...interface{}) error {
-	return customError{errorType: errorType, originalError: errors.Wrapf(err, msg, args...)}
+	return customError{errorType: errorType, originalError: pkgerrors.Wrapf(err, msg, args...)}
 }
 
 // Error returns the mssage of a customError
@@ -55,12 +56,12 @@ func (error customError) Error() string {
 
 // New creates a no type error
 func New(msg string) error {
-	return customError{errorType: NoType, originalError: errors.New(msg)}
+	return customError{errorType: NoType, originalError: pkgerrors.New(msg)}
 }
 
 // Newf creates a no type error with formatted message
 func Newf(msg string, args ...interface{}) error {
-	return customError{errorType: NoType, originalError: errors.New(fmt.Sprintf(msg, args...))}
+	return customError{errorType: NoType, originalError: pkgerrors.New(fmt.Sprintf(msg, args...))}
 }
 
 // Wrap an error with a string
@@ -70,17 +71,17 @@ func Wrap(err error, msg string) error {
 
 // Cause gives the original error
 func Cause(err error) error {
-	return errors.Cause(err)
+	return pkgerrors.Cause(err)
 }
 
 // Wrapf an error with format string
 func Wrapf(err error, msg string, args ...interface{}) error {
-	wrappedError := errors.Wrapf(err, msg, args...)
+	wrappedError := pkgerrors.Wrapf(err, msg, args...)
 	if customErr, ok := err.(customError); ok {
 		return customError{
-			errorType: customErr.errorType,
+			errorType:     customErr.errorType,
 			originalError: wrappedError,
-			context: customErr.context,
+			context:       customErr.context,
 		}
 	}
 
@@ -100,7 +101,7 @@ func AddErrorContext(err error, field, message string) error {
 // GetErrorContext returns the error context
 func GetErrorContext(err error) map[string]string {
 	emptyContext := errorContext{}
-	if customErr, ok := err.(customError); ok || customErr.context != emptyContext  {
+	if customErr, ok := err.(customError); ok || customErr.context != emptyContext {
 
 		return map[string]string{"field": customErr.context.Field, "message": customErr.context.Message}
 	}
