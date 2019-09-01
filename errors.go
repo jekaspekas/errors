@@ -34,7 +34,7 @@ func (errorType ErrorType) New(msg string) error {
 	return customError{errorType: errorType, originalError: pkgerrors.New(msg)}
 }
 
-// New creates a new customError with formatted message
+// Newf creates a new customError with formatted message
 func (errorType ErrorType) Newf(msg string, args ...interface{}) error {
 	return customError{errorType: errorType, originalError: fmt.Errorf(msg, args...)}
 }
