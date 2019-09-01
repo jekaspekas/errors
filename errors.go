@@ -44,9 +44,9 @@ func (errorType ErrorType) Wrap(err error, msg string) error {
 	return errorType.Wrapf(err, msg)
 }
 
-// Wrap creates a new wrapped error with formatted message
-func (errorType ErrorType) Wrapf(err error, msg string, args ...interface{}) error {
-	return customError{errorType: errorType, originalError: pkgerrors.Wrapf(err, msg, args...)}
+// Wrapf creates a new wrapped error with formatted message
+func (errorType ErrorType) Wrapf(err error, format string, args ...interface{}) error {
+	return customError{errorType: errorType, originalError: pkgerrors.Wrapf(err, format, args...)}
 }
 
 // Error returns the mssage of a customError
@@ -75,8 +75,8 @@ func Cause(err error) error {
 }
 
 // Wrapf an error with format string
-func Wrapf(err error, msg string, args ...interface{}) error {
-	wrappedError := pkgerrors.Wrapf(err, msg, args...)
+func Wrapf(err error, format string, args ...interface{}) error {
+	wrappedError := pkgerrors.Wrapf(err, format, args...)
 	if customErr, ok := err.(customError); ok {
 		return customError{
 			errorType:     customErr.errorType,
