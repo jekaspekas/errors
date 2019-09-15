@@ -14,10 +14,14 @@ const (
 	NoType ErrorType = iota
 	// BadRequest error
 	BadRequest
-	// NotFound error
-	NotFound
+	// NotExists error
+	NotExists
+	// AlreadyExists error
+	AlreadyExists
 	// AccessDenied error
 	AccessDenied
+	// Exceeded error
+	Exceeded
 )
 
 type customError struct {
