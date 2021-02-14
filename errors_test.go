@@ -1,10 +1,12 @@
-package main_test
+package errors_test
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
-	errors "github.com/henrmota/errors-handling-example"
+
+	errors "github.com/jekaspekas/errors"
+	"github.com/stretchr/testify/assert"
 )
+
 func TestContext(t *testing.T) {
 
 	err := errors.BadRequest.New("an_error")
