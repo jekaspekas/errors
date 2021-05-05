@@ -22,6 +22,8 @@ const (
 	AccessDenied
 	// Exceeded error
 	Exceeded
+	// InsufficientFunds error
+	InsufficientFunds
 )
 
 type customError struct {
